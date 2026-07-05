@@ -1,0 +1,163 @@
+/* keep index.html background off while auth is active */
+body.auth-active { background: transparent; overflow: hidden; }
+html.auth-active { background: transparent; }
+
+/* Auth page full-screen layout */
+.auth-page {
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* background image (same asset used before) with subtle overlay */
+.auth-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(245,242,231,0.25), rgba(245,242,231,0.25)),
+    url("https://picsum.photos/1920/1080?sepia=1");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.99;
+  pointer-events: none;
+  filter: saturate(0.97) contrast(0.95) brightness(0.93);
+}
+
+/* card styling aligned to home page palette & type */
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  background-color: rgba(245,242,231,0.95); /* parchment tone */
+  padding: 34px;
+  border-radius: 14px;
+  border: 1px solid rgba(212,175,55,0.12); /* gold accent */
+  box-shadow: 0 12px 30px rgba(16, 24, 40, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(3px);
+  color: #2D1B14;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* title uses Playfair to match hero */
+.auth-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2D1B14;
+  margin-bottom: 18px;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.02em;
+}
+
+/* inputs that feel consistent with the site */
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(45,27,20,0.06);
+  font-size: 15px;
+  transition: box-shadow 0.18s, border-color 0.18s;
+  background: rgba(255,255,255,0.92);
+  color: #2D1B14;
+}
+
+.auth-input::placeholder { color: rgba(45,27,20,0.45); }
+
+.auth-input:focus {
+  outline: none;
+  border-color: rgba(212,175,55,0.35);
+  box-shadow: 0 6px 18px rgba(212,175,55,0.06);
+}
+
+/* primary button styled like home page "scholarly" */
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #D4AF37;
+  background: #2D1B14;
+  color: #F5F2E7;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: transform 0.12s, filter 0.12s;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.95);
+}
+
+/* small helper text */
+.auth-switch {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: rgba(45,27,20,0.6);
+}
+
+.auth-link {
+  color: #D4AF37;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* divider and google button styling */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  color: rgba(45,27,20,0.45);
+  font-size: 13px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(45,27,20,0.06);
+}
+
+.auth-divider span { padding: 0 10px; }
+
+.google-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(45,27,20,0.08);
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.google-icon {
+  width: 1.2em;
+  height: 1.2em;
+  object-fit: contain;
+  display: inline-block;
+}

@@ -1,0 +1,116 @@
+{
+  "started_at_utc": "20260611_172153",
+  "project_root": "C:\\Users\\mns\\Downloads\\P_F_E-main\\P_F_E",
+  "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "totals": {
+    "passed": 6,
+    "failed": 1,
+    "timeout": 0,
+    "error": 0,
+    "total": 7
+  },
+  "results": [
+    {
+      "name": "backend syntax compile",
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 0.47,
+      "command": [
+        "C:\\Users\\mns\\Downloads\\P_F_E-main\\P_F_E\\backend\\.venv\\Scripts\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "backend"
+      ],
+      "cwd": ".",
+      "output_tail": ""
+    },
+    {
+      "name": "backend focused regression tests",
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 1.28,
+      "command": [
+        "C:\\Users\\mns\\Downloads\\P_F_E-main\\P_F_E\\backend\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "backend/tests/unit/test_challenge_option_counts.py",
+        "backend/tests/unit/test_custom_generation_policy.py",
+        "backend/tests/unit/test_config_runtime_knobs.py",
+        "-q"
+      ],
+      "cwd": ".",
+      "output_tail": "................                                                         [100%]\n16 passed in 0.72s\n"
+    },
+    {
+      "name": "backend unit tests",
+      "status": "failed",
+      "returncode": 1,
+      "duration_seconds": 4.27,
+      "command": [
+        "C:\\Users\\mns\\Downloads\\P_F_E-main\\P_F_E\\backend\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "backend/tests/unit",
+        "-q"
+      ],
+      "cwd": ".",
+      "output_tail": "......................F................................................. [ 31%]\n........................................................................ [ 62%]\n...............................................................F........ [ 93%]\n...............                                                          [100%]\n================================== FAILURES ===================================\n______ test_alembic_graph_has_single_root_single_head_and_expected_chain ______\n\n    def test_alembic_graph_has_single_root_single_head_and_expected_chain():\n        script = _script_directory()\n    \n        assert script.get_bases() == [\"20260411_01\"]\n>       assert script.get_heads() == [\"20260611_01\"]\nE       AssertionError: assert ['20260611_02'] == ['20260611_01']\nE         \nE         At index 0 diff: '20260611_02' != '20260611_01'\nE         Use -v to get more diff\n\nbackend\\tests\\unit\\test_alembic_graph.py:22: AssertionError\n__________ test_expected_alembic_heads_follow_local_migration_graph ___________\n\n    def test_expected_alembic_heads_follow_local_migration_graph():\n>       assert repair.expected_alembic_heads() == [\"20260611_01\"]\nE       AssertionError: assert ['20260611_02'] == ['20260611_01']\nE         \nE         At index 0 diff: '20260611_02' != '20260611_01'\nE         Use -v to get more diff\n\nbackend\\tests\\unit\\test_repair_schema_preflight.py:9: AssertionError\n============================== warnings summary ===============================\ntests/unit/test_auth_helpers.py::test_create_access_token_contains_expected_claims\ntests/unit/test_auth_helpers.py::test_get_current_user_rejects_non_uuid_sub\ntests/unit/test_auth_helpers.py::test_cookie_auth_accepts_matching_csrf_token\ntests/unit/test_auth_helpers.py::test_bearer_auth_does_not_require_csrf_for_unsafe_methods\n  C:\\Users\\mns\\Downloads\\P_F_E-main\\P_F_E\\backend\\.venv\\Lib\\site-packages\\jose\\jwt.py:311: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n    now = timegm(datetime.utcnow().utctimetuple())\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED backend\\tests\\unit\\test_alembic_graph.py::test_alembic_graph_has_single_root_single_head_and_expected_chain\nFAILED backend\\tests\\unit\\test_repair_schema_preflight.py::test_expected_alembic_heads_follow_local_migration_graph\n2 failed, 229 passed, 4 warnings in 3.45s\n"
+    },
+    {
+      "name": "backend integration tests",
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 7.92,
+      "command": [
+        "C:\\Users\\mns\\Downloads\\P_F_E-main\\P_F_E\\backend\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "backend/tests/integration",
+        "-q"
+      ],
+      "cwd": ".",
+      "output_tail": ".                                                                        [100%]\n1 passed in 7.54s\n"
+    },
+    {
+      "name": "frontend typecheck",
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 4.48,
+      "command": [
+        "npm.cmd",
+        "run",
+        "lint"
+      ],
+      "cwd": "frontend",
+      "output_tail": "\n> adaptiq---the-scholar's-archive@0.0.0 lint\n> tsc --noEmit\n\n"
+    },
+    {
+      "name": "frontend production build",
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 3.3,
+      "command": [
+        "npm.cmd",
+        "run",
+        "build"
+      ],
+      "cwd": "frontend",
+      "output_tail": "\n> adaptiq---the-scholar's-archive@0.0.0 build\n> vite build\n\n\u001b[36mvite v6.4.1 \u001b[32mbuilding for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m\u00e2\u0153\u201c\u001b[39m 2158 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  2.31 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m \u00e2\u201d\u201a gzip:   1.00 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[35massets/index-0pLwe8lI.css  \u001b[39m\u001b[1m\u001b[2m 52.78 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m \u00e2\u201d\u201a gzip:   9.71 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[36massets/index-U0b-sST9.js   \u001b[39m\u001b[1m\u001b[33m612.85 kB\u001b[39m\u001b[22m\u001b[2m \u00e2\u201d\u201a gzip: 171.31 kB\u001b[22m\n\u001b[33m\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\u001b[39m\n\u001b[32m\u00e2\u0153\u201c built in 2.75s\u001b[39m\n"
+    },
+    {
+      "name": "frontend e2e tests",
+      "status": "passed",
+      "returncode": 0,
+      "duration_seconds": 16.47,
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:e2e"
+      ],
+      "cwd": "frontend",
+      "output_tail": "\n> adaptiq---the-scholar's-archive@0.0.0 test:e2e\n> playwright test\n\n\nRunning 12 tests using 8 workers\n\n  ok  7 [chromium] \u00e2\u20ac\u00ba tests\\pvp-leaderboard.spec.ts:8:1 \u00e2\u20ac\u00ba PvP room loads rating and renders leaderboard entries (9.1s)\n  ok  8 [chromium] \u00e2\u20ac\u00ba tests\\visual-room.spec.ts:24:1 \u00e2\u20ac\u00ba visual room starts a session, shows a hint, and records an answer (9.3s)\n  ok  6 [chromium] \u00e2\u20ac\u00ba tests\\profile.spec.ts:11:1 \u00e2\u20ac\u00ba profile page loads user stats and saves profile edits (9.3s)\n  ok  3 [chromium] \u00e2\u20ac\u00ba tests\\auth-routing.spec.ts:9:1 \u00e2\u20ac\u00ba protected routes redirect unauthenticated users to login (9.6s)\n  ok  2 [chromium] \u00e2\u20ac\u00ba tests\\password-reset.spec.ts:4:1 \u00e2\u20ac\u00ba forgot and reset password forms complete with mocked auth API (10.1s)\n  ok 10 [chromium] \u00e2\u20ac\u00ba tests\\auth-routing.spec.ts:18:1 \u00e2\u20ac\u00ba non-admin users are redirected away from admin dashboard (1.2s)\n  ok  9 [chromium] \u00e2\u20ac\u00ba tests\\profile.spec.ts:59:1 \u00e2\u20ac\u00ba profile requests and confirms verified email change (1.6s)\n  ok  4 [chromium] \u00e2\u20ac\u00ba tests\\security-smoke.spec.ts:7:1 \u00e2\u20ac\u00ba signup uses cookie auth without legacy private localStorage keys (11.1s)\n  ok  1 [chromium] \u00e2\u20ac\u00ba tests\\admin-custom-topics.spec.ts:7:1 \u00e2\u20ac\u00ba admin dashboard approves a custom topic candidate (12.1s)\n  ok 11 [chromium] \u00e2\u20ac\u00ba tests\\auth-routing.spec.ts:29:1 \u00e2\u20ac\u00ba dashboard room cards and sidebar navigate across room pages (1.5s)\n  ok 12 [chromium] \u00e2\u20ac\u00ba tests\\profile.spec.ts:112:1 \u00e2\u20ac\u00ba profile shows validation message when password fields are incomplete (1.3s)\n  ok  5 [chromium] \u00e2\u20ac\u00ba tests\\custom-timer.spec.ts:19:1 \u00e2\u20ac\u00ba custom room timer pauses while the next question is loading (14.2s)\n\n  12 passed (15.7s)\n"
+    }
+  ]
+}

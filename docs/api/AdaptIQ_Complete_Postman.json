@@ -1,0 +1,1772 @@
+{
+	"info": {
+		"name": "AdaptIQ - Complete API Test Suite",
+		"description": "Comprehensive Postman collection for AdaptIQ backend.\n\nIMPORTANT: Run the entire collection in order (use Runner). Folders depend on Auth tokens set by '1. Auth' folder.\n\nSetup:\n1. Set {{baseUrl}} to your server\n2. Run the entire collection via Collection Runner\n3. Tokens, IDs, and session data auto-propagate between requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{ "key": "baseUrl", "value": "http://localhost:8000" },
+		{ "key": "token1", "value": "" },
+		{ "key": "token2", "value": "" },
+		{ "key": "adminToken", "value": "" },
+		{ "key": "userId1", "value": "" },
+		{ "key": "userId2", "value": "" },
+		{ "key": "email1", "value": "" },
+		{ "key": "email2", "value": "" },
+		{ "key": "username1", "value": "" },
+		{ "key": "username2", "value": "" },
+		{ "key": "mailboxBaseEmail", "value": "dak.moones@gmail.com" },
+		{ "key": "adminEmail", "value": "dak.moones+admin@gmail.com" },
+		{ "key": "adminPassword", "value": "AdminPass123!" },
+		{ "key": "password", "value": "TestPass123!" },
+		{ "key": "classicSessionId", "value": "" },
+		{ "key": "classicQuestionId", "value": "" },
+		{ "key": "classicQuestionText", "value": "" },
+		{ "key": "classicCorrectAnswer", "value": "" },
+		{ "key": "classicUsedHint", "value": "false" },
+		{ "key": "challengeSessionId", "value": "" },
+		{ "key": "challengeQuestionId", "value": "" },
+		{ "key": "challengeAnswerOption0", "value": "" },
+		{ "key": "customSessionId", "value": "" },
+		{ "key": "customQuestionId", "value": "" },
+		{ "key": "customAnswerOption0", "value": "" },
+		{ "key": "customCorrectAnswer", "value": "" },
+		{ "key": "customExplanation", "value": "" },
+		{ "key": "customUsedHint", "value": "false" },
+		{ "key": "customTopic", "value": "History" },
+		{ "key": "conceptId1", "value": "" },
+		{ "key": "adminCreatedConceptId", "value": "" },
+		{ "key": "adminCreatedQuestionId", "value": "" },
+		{ "key": "visualSessionId", "value": "" },
+		{ "key": "visualQuestionId", "value": "" },
+		{ "key": "visualAnswerGuess", "value": "" },
+		{ "key": "pvpMatchId", "value": "" },
+		{ "key": "pvpQuestionId", "value": "" },
+		{ "key": "pvpAnswerOption0", "value": "" },
+		{ "key": "pvpQuestionsJson", "value": "" },
+		{ "key": "pvpQuestionIndex", "value": "0" },
+		{ "key": "pvpTotalQuestions", "value": "0" },
+		{ "key": "pvpPollAttempts", "value": "0" },
+		{ "key": "adminBootstrapKey", "value": "adaptiq-bootstrap-dev-key-2026" },
+		{ "key": "govRuleId", "value": "" },
+		{ "key": "govTestPattern", "value": "" },
+		{ "key": "customApprovedType", "value": "" },
+		{ "key": "customApprovedName", "value": "" },
+		{ "key": "customApprovedSlug", "value": "" },
+		{ "key": "customApprovedSourceTopic", "value": "" }
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const reqName = pm.info.requestName || '';",
+					"const rotateNow = reqName === 'Signup User1';",
+					"const requiredIds = ['email1', 'email2', 'username1', 'username2'];",
+					"const missingIdentity = requiredIds.some((k) => !(pm.collectionVariables.get(k) || '').trim());",
+					"",
+					"function buildAliasEmail(alias, ts) {",
+					"  const mailbox = (pm.collectionVariables.get('mailboxBaseEmail') || '').trim();",
+					"  if (mailbox.includes('@')) {",
+					"    const at = mailbox.indexOf('@');",
+					"    const local = mailbox.slice(0, at).split('+')[0];",
+					"    const domain = mailbox.slice(at + 1);",
+					"    return `${local}+${alias}_${ts}@${domain}`;",
+					"  }",
+					"  return `${alias}_${ts}@example.com`;",
+					"}",
+					"",
+					"function seedFreshIdentities() {",
+					"  const ts = Date.now();",
+					"  pm.collectionVariables.set('email1', buildAliasEmail('user1', ts));",
+					"  pm.collectionVariables.set('email2', buildAliasEmail('user2', ts));",
+					"  pm.collectionVariables.set('username1', 'testuser1_' + ts);",
+					"  pm.collectionVariables.set('username2', 'testuser2_' + ts);",
+					"  [",
+					"    'token1', 'token2', 'userId1', 'userId2',",
+					"    'classicSessionId', 'classicQuestionId',",
+					"    'challengeSessionId', 'challengeQuestionId',",
+					"    'challengeSubmitStatus', 'challengeAnswerId', 'challengeRankPointsAfterSubmit',",
+					"    'customSessionId', 'customQuestionId',",
+					"    'pvpMatchId', 'pvpQuestionId', 'pvpAnswerOption0', 'pvpQuestionsJson', 'pvpQuestionIndex', 'pvpTotalQuestions',",
+					"    'conceptId1', 'adminCreatedConceptId', 'adminCreatedQuestionId',",
+					"    'visualSessionId', 'visualQuestionId', 'visualAnswerGuess',",
+					"    'customApprovedType', 'customApprovedName', 'customApprovedSlug', 'customApprovedSourceTopic'",
+					"  ].forEach((k) => pm.collectionVariables.set(k, ''));",
+					"  pm.collectionVariables.set('customTopic', 'History');",
+					"  pm.collectionVariables.set('pvpPollAttempts', '0');",
+					"  console.log('Generated fresh run identities:', pm.collectionVariables.get('email1'), pm.collectionVariables.get('email2'));",
+					"}",
+					"",
+					"if (rotateNow || missingIdentity) {",
+					"  seedFreshIdentities();",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "0. Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": { "method": "GET", "url": "{{baseUrl}}/health" },
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Health OK', () => { pm.response.to.have.status(200); });",
+						"pm.test('Public health is minimal', () => {",
+						"  const d = pm.response.json();",
+						"  pm.expect(d).to.eql({ status: 'ok' });",
+						"});"
+					]}}]
+				},
+				{
+					"name": "OpenAPI Docs",
+					"request": { "method": "GET", "url": "{{baseUrl}}/docs" },
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Docs follow environment policy', () => { pm.expect([200, 404]).to.include(pm.response.code); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "1. Auth",
+			"item": [
+				{
+					"name": "Signup User1",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/signup",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email1}}\",\n  \"username\": \"{{username1}}\",\n  \"password\": \"{{password}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Signup User1 created', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Signup User1 Duplicate Email (409)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/signup",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email1}}\",\n  \"username\": \"dup_{{username1}}\",\n  \"password\": \"{{password}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Duplicate email returns 409', () => { pm.response.to.have.status(409); });"
+					]}}]
+				},
+				{
+					"name": "Login User1",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/login",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email1}}\",\n  \"password\": \"{{password}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Login OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has token', () => { pm.expect(d.access_token).to.be.a('string'); });",
+						"pm.collectionVariables.set('token1', d.access_token);",
+						"pm.collectionVariables.set('userId1', d.user.id);",
+						"console.log('User1:', d.user.id, 'Token saved');"
+					]}}]
+				},
+				{
+					"name": "Signup User2",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/signup",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email2}}\",\n  \"username\": \"{{username2}}\",\n  \"password\": \"{{password}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Signup User2 created', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Signup User2 Duplicate Username (409)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/signup",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"another_{{email2}}\",\n  \"username\": \"{{username2}}\",\n  \"password\": \"{{password}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Duplicate username returns 409', () => { pm.response.to.have.status(409); });"
+					]}}]
+				},
+				{
+					"name": "Login User2",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/login",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email2}}\",\n  \"password\": \"{{password}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Login User2 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.collectionVariables.set('token2', d.access_token);",
+						"pm.collectionVariables.set('userId2', d.user.id);",
+						"console.log('User2:', d.user.id, 'Token saved');"
+					]}}]
+				},
+				{
+					"name": "Login Admin",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/login",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"if (pm.response.code === 200) { pm.test('Admin login OK', () => { pm.response.to.have.status(200); }); } else { pm.test('Admin login unauthorized before bootstrap', () => { pm.response.to.have.status(401); }); }",
+						"const d = pm.response.code === 200 ? pm.response.json() : null;",
+						"if (pm.response.code === 200) {",
+						"  pm.test('Admin token present', () => { pm.expect(d.access_token).to.be.a('string'); });",
+						"  pm.collectionVariables.set('adminToken', d.access_token);",
+						"  console.log('Admin:', d.user.id, 'Token saved');",
+						"} else {",
+						"  pm.collectionVariables.set('adminToken', '');",
+						"  console.log('Admin login not available yet; bootstrap step will promote user1.');",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Login - Wrong Credentials",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/login",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"wrong@email.com\",\n  \"password\": \"wrongpassword\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('401 Unauthorized', () => { pm.response.to.have.status(401); });"
+					]}}]
+				},
+				{
+					"name": "GET /me",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/auth/me",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "GET /me (invalid bearer rejected)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/auth/me",
+						"header": [{ "key": "Authorization", "value": "Bearer invalid" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Invalid bearer rejected with 401', () => { pm.response.to.have.status(401); });"
+					]}}]
+				},
+				{
+					"name": "GET /profile",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/auth/profile",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Profile OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "PATCH /profile",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/auth/profile",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"username\": \"profile_{{userId1}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Profile update OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Updated username returned', () => { pm.expect(d.username).to.be.a('string'); });",
+						"pm.collectionVariables.set('username1', d.username);"
+					]}}]
+				},
+				{
+					"name": "GET /stats",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/auth/stats",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Stats OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Stats shape', () => {",
+						"  pm.expect(d).to.have.property('total_questions');",
+						"  pm.expect(d).to.have.property('daily_questions');",
+						"  pm.expect(d).to.have.property('room_progress');",
+						"});"
+					]}}]
+				},
+				{
+					"name": "GET /stats/daily-trend",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/auth/stats/daily-trend?days=7",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Daily trend OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Trend includes points', () => { pm.expect(d).to.have.property('points'); });"
+					]}}]
+				},
+				{
+					"name": "GET /stats (invalid bearer rejected)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/auth/stats",
+						"header": [{ "key": "Authorization", "value": "Bearer invalid" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Invalid bearer rejected with 401', () => { pm.response.to.have.status(401); });"
+					]}}]
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/forgot-password",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email1}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Reset Password (bad OTP)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/reset-password",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email1}}\",\n  \"code\": \"000000\",\n  \"new_password\": \"NewPass123!\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('400 bad OTP', () => { pm.response.to.have.status(400); });"
+					]}}]
+				},
+				{
+					"name": "Bootstrap Admin",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/auth/bootstrap-admin",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email1}}\",\n  \"bootstrap_key\": \"{{adminBootstrapKey}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const s = pm.response.code;",
+						"pm.test('Bootstrap admin OK', () => { pm.response.to.have.status(200); });",
+						"if (!(pm.collectionVariables.get('adminToken') || '').trim()) {",
+						"  pm.collectionVariables.set('adminToken', pm.collectionVariables.get('token1') || '');",
+						"}"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "2. Onboarding",
+			"item": [
+				{
+					"name": "GET Status",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/onboarding/status?user_id={{userId1}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Submit Survey",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/onboarding/survey",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"topics_confident\": [\"World War II\"],\n  \"topics_want_to_learn\": [\"Cold War\"]\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Survey OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Skip Onboarding (User2)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/onboarding/skip",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token2}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId2}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Skip OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Mark Tour Seen",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/onboarding/mark-tour-seen",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Tour marked', () => { pm.response.to.have.status(200); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "3. Classic Room",
+			"item": [
+				{
+					"name": "Start Session",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/rooms/classic/questions",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"topic\": \"history\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has question data', () => {",
+						"  pm.expect(d).to.have.property('id');",
+						"  pm.expect(d).to.have.property('session_id');",
+						"});",
+						"pm.collectionVariables.set('classicUsedHint', 'false');",
+						"pm.collectionVariables.set('classicSessionId', d.session_id);",
+						"pm.collectionVariables.set('classicQuestionId', d.id);",
+						"pm.collectionVariables.set('classicQuestionText', d.question_text || d.text || 'Which pharaoh built the Great Pyramid?');",
+						"pm.collectionVariables.set('classicCorrectAnswer', d.correct_answer || d.correctAnswer || '');"
+					]}}]
+				},
+				{
+					"name": "Get Hint",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/rooms/classic/hints",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"question_id\": \"{{classicQuestionId}}\",\n  \"question_text\": \"{{classicQuestionText}}\",\n  \"correct_answer\": \"{{classicCorrectAnswer}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"if (pm.response.code === 200) { pm.test('Hint generated', () => { pm.response.to.have.status(200); }); } else { pm.test('Hint unavailable (LLM down)', () => { pm.response.to.have.status(503); }); }",
+						"pm.collectionVariables.set('classicUsedHint', pm.response.code === 200 ? 'true' : 'false');"
+					]}}]
+				},
+				{
+					"name": "Submit Answer",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/rooms/classic/answers",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"session_id\": \"{{classicSessionId}}\",\n  \"question_id\": \"{{classicQuestionId}}\",\n  \"selected_index\": 0,\n  \"time_taken\": 5,\n  \"used_hint\": {{classicUsedHint}}\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Answer accepted', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Invalid Session (404)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/rooms/classic/answers",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"session_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"question_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"selected_index\": 0,\n  \"time_taken\": 5,\n  \"used_hint\": false\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('404', () => { pm.response.to.have.status(404); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "4. Challenge Room",
+			"item": [
+				{
+					"name": "Get Rank",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/challenge/user/{{userId1}}/rank",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has rank data', () => {",
+						"  pm.expect(d).to.have.property('current_rank');",
+						"  pm.expect(d).to.have.property('rank_points');",
+						"  pm.expect(d).to.have.property('total_sessions');",
+						"});"
+					]}}]
+				},
+				{
+					"name": "Start Session (Level 1)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/challenge/start-session",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"topic\": \"History\",\n  \"starting_level\": 1\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has session', () => { pm.expect(d).to.have.property('session_id'); });",
+						"pm.collectionVariables.set('challengeSessionId', d.session_id);"
+					]}}]
+				},
+				{
+					"name": "Generate Question (Level 1)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/challenge/generate-question",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"session_id\": \"{{challengeSessionId}}\",\n  \"topic\": \"History\",\n  \"level\": 1\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"if (pm.response.code === 200) { pm.test('Challenge question generated', () => { pm.response.to.have.status(200); }); } else { pm.test('Challenge generator unavailable', () => { pm.response.to.have.status(503); }); }",
+						"const d = pm.response.json();",
+						"if (pm.response.code === 200) {",
+						"  pm.test('Has question (no correctAnswer exposed)', () => {",
+						"    pm.expect(d).to.have.property('id');",
+						"    pm.expect(d).to.have.property('text');",
+						"    pm.expect(d).to.have.property('options');",
+						"    pm.expect(d).to.not.have.property('correctAnswer');",
+						"    pm.expect(d).to.have.property('level');",
+						"    pm.expect(d).to.have.property('points_value');",
+						"  });",
+						"  pm.test('Level 1 = 2 options', () => { pm.expect(d.options.length).to.eql(2); });",
+						"  pm.collectionVariables.set('challengeQuestionId', d.id);",
+						"  pm.collectionVariables.set('challengeAnswerOption0', (d.options && d.options.length) ? d.options[0] : '');",
+						"  console.log('Challenge Q:', d.id, 'Options:', d.options.length);",
+						"} else {",
+						"  pm.collectionVariables.set('challengeQuestionId', '');",
+						"  pm.collectionVariables.set('challengeAnswerOption0', '');",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Submit Answer (Level 1)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/challenge/submit-answer",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"session_id\": \"{{challengeSessionId}}\",\n  \"question_id\": \"{{challengeQuestionId}}\",\n  \"answer\": \"{{challengeAnswerOption0}}\",\n  \"time_taken\": 8\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const hasQuestion = (pm.collectionVariables.get('challengeQuestionId') || '').trim().length > 0;",
+						"if (!hasQuestion) { pm.test('Submit blocked without generated question', () => { pm.response.to.have.status(422); }); } else { pm.test('Submit answer OK', () => { pm.response.to.have.status(200); }); }",
+						"pm.collectionVariables.set('challengeSubmitStatus', String(pm.response.code));",
+						"if (hasQuestion && pm.response.code === 200) {",
+						"  const d = pm.response.json();",
+						"  pm.test('Has result', () => {",
+						"    pm.expect(d).to.have.property('is_correct');",
+						"    pm.expect(d).to.have.property('points_change');",
+						"    pm.expect(d).to.have.property('new_rank_points');",
+						"    pm.expect(d).to.have.property('new_level');",
+						"    pm.expect(d).to.have.property('streak_correct');",
+						"    pm.expect(d).to.have.property('streak_wrong');",
+						"  });",
+						"  pm.collectionVariables.set('challengeAnswerId', d.id || '');",
+						"  pm.collectionVariables.set('challengeRankPointsAfterSubmit', String(d.new_rank_points ?? ''));",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Duplicate Answer (Idempotent Replay)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/challenge/submit-answer",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"session_id\": \"{{challengeSessionId}}\",\n  \"question_id\": \"{{challengeQuestionId}}\",\n  \"answer\": \"{{challengeAnswerOption0}}\",\n  \"time_taken\": 3\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const prevSubmit = (pm.collectionVariables.get('challengeSubmitStatus') || '').trim();",
+						"if (prevSubmit === '200') {",
+						"  pm.test('Duplicate answer replays idempotently', () => { pm.response.to.have.status(200); });",
+						"  const d = pm.response.json();",
+						"  pm.test('Duplicate response matches original answer', () => {",
+						"    pm.expect(d).to.have.property('id');",
+						"    pm.expect(d.id).to.eql(pm.collectionVariables.get('challengeAnswerId'));",
+						"    pm.expect(String(d.new_rank_points ?? '')).to.eql(pm.collectionVariables.get('challengeRankPointsAfterSubmit'));",
+						"  });",
+						"} else {",
+						"  pm.test('Duplicate request invalid without prior submit', () => { pm.response.to.have.status(422); });",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Get Session Details",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/challenge/session/{{challengeSessionId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has session data', () => {",
+						"  pm.expect(d).to.have.property('session_id');",
+						"  pm.expect(d).to.have.property('current_level');",
+						"  pm.expect(d).to.have.property('total_questions');",
+						"  pm.expect(d).to.have.property('correct_answers');",
+						"  pm.expect(d).to.have.property('streak_correct');",
+						"});"
+					]}}]
+				},
+				{
+					"name": "Change Level Up",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/challenge/session/{{challengeSessionId}}/change-level",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"direction\": \"up\",\n  \"reason\": \"manual\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "End Session",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/challenge/session/{{challengeSessionId}}/end",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has summary', () => {",
+						"  pm.expect(d).to.have.property('total_questions');",
+						"  pm.expect(d).to.have.property('correct_answers');",
+						"  pm.expect(d).to.have.property('total_points_earned');",
+						"  pm.expect(d).to.have.property('new_rank');",
+						"});"
+					]}}]
+				},
+				{
+					"name": "Rank After Session",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/challenge/user/{{userId1}}/rank",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Empty Answer (400)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/challenge/submit-answer",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"session_id\": \"{{challengeSessionId}}\",\n  \"question_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"answer\": \"\",\n  \"time_taken\": 3\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('400 empty', () => { pm.response.to.have.status(400); });"
+					]}}]
+				},
+				{
+					"name": "Cross-User Rank (403)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/challenge/user/{{userId2}}/rank",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('403', () => { pm.response.to.have.status(403); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "5. Custom Room",
+			"item": [
+				{
+					"name": "List Topics",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/custom/topics",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "List Concepts",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/custom/concepts/{{customTopic}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Start Session",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/custom/start-session",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"topic\": \"History - World War II\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.collectionVariables.set('customSessionId', d.session_id);"
+					]}}]
+				},
+				{
+					"name": "Generate Question",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/custom/generate-question",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"session_id\": \"{{customSessionId}}\",\n  \"topic\": \"History - World War II\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"if (pm.response.code === 200) { pm.test('Custom question generated', () => { pm.response.to.have.status(200); }); } else { pm.test('Custom generator unavailable', () => { pm.response.to.have.status(503); }); }",
+						"if (pm.response.code === 200) {",
+						"  const d = pm.response.json();",
+						"  pm.test('Has question', () => { pm.expect(d).to.have.property('id'); });",
+						"  pm.collectionVariables.set('customQuestionId', d.id || '');",
+						"  pm.collectionVariables.set('customUsedHint', 'false');",
+						"  pm.collectionVariables.set('customAnswerOption0', (d.options && d.options.length) ? d.options[0] : '');",
+						"  pm.collectionVariables.set('customCorrectAnswer', d.correctAnswer || d.correct_answer || 'test');",
+						"  pm.collectionVariables.set('customExplanation', d.explanation || '');",
+						"} else {",
+						"  pm.collectionVariables.set('customQuestionId', '');",
+						"  pm.collectionVariables.set('customAnswerOption0', '');",
+						"  pm.collectionVariables.set('customCorrectAnswer', '');",
+						"  pm.collectionVariables.set('customExplanation', '');",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Submit Answer",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/custom/submit-answer",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"session_id\": \"{{customSessionId}}\",\n  \"question_id\": \"{{customQuestionId}}\",\n  \"answer\": \"{{customAnswerOption0}}\",\n  \"used_hint\": {{customUsedHint}},\n  \"correct_answer\": \"{{customCorrectAnswer}}\",\n  \"explanation\": \"{{customExplanation}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const hasQuestion = (pm.collectionVariables.get('customQuestionId') || '').trim().length > 0;",
+						"if (!hasQuestion) { pm.test('Submit blocked without generated question', () => { pm.response.to.have.status(422); }); } else { pm.test('Custom answer submitted', () => { pm.response.to.have.status(200); }); }"
+					]}}]
+				},
+				{
+					"name": "Generate Hint",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/custom/generate-hint",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"question_id\": \"{{customQuestionId}}\",\n  \"question_text\": \"When did WWII end?\",\n  \"correct_answer\": \"1945\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const hasQuestion = (pm.collectionVariables.get('customQuestionId') || '').trim().length > 0;",
+						"if (!hasQuestion) { pm.test('Hint blocked without generated question', () => { pm.response.to.have.status(422); }); } else if (pm.response.code === 200) { pm.test('Hint generated', () => { pm.response.to.have.status(200); }); } else { pm.test('Hint unavailable (LLM down)', () => { pm.response.to.have.status(503); }); }",
+						"pm.collectionVariables.set('customUsedHint', pm.response.code === 200 ? 'true' : 'false');"
+					]}}]
+				},
+				{
+					"name": "End Session",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/custom/session/{{customSessionId}}/end",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Concept Mastery",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/custom/user/{{userId1}}/concept-mastery",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "6. PvP Room",
+			"item": [
+				{
+					"name": "Get Rating (User1)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/pvp/user/{{userId1}}/rating",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has rating', () => {",
+						"  pm.expect(d).to.have.property('elo_rating');",
+						"  pm.expect(d).to.have.property('total_matches');",
+						"});"
+					]}}]
+				},
+				{
+					"name": "Leaderboard",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/pvp/leaderboard?limit=10",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "User1 Join Queue",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/pvp/join-queue",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"topic\": \"History\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "User1 Queue Status (waiting)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/pvp/queue-status?user_id={{userId1}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const s = pm.response.json().status;",
+						"pm.test('Waiting or matched', () => { pm.expect(['waiting','matched']).to.include(s); });"
+					]}}]
+				},
+				{
+					"name": "User2 Join Queue (match)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/pvp/join-queue",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token2}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId2}}\",\n  \"topic\": \"History\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "User1 Queue Status (matched)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/pvp/queue-status?user_id={{userId1}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Status valid', () => { pm.expect(['waiting','matched']).to.include(d.status); });",
+						"if (d.match_id) { pm.collectionVariables.set('pvpMatchId', d.match_id); }",
+						"if (d.status === 'matched' && d.match_id) {",
+						"  pm.collectionVariables.unset('pvpPollAttempts');",
+						"  pm.execution.setNextRequest('Match Details');",
+						"} else {",
+						"  const attempts = parseInt(pm.collectionVariables.get('pvpPollAttempts') || '0', 10);",
+						"  if (attempts < 8) {",
+						"    pm.collectionVariables.set('pvpPollAttempts', String(attempts + 1));",
+						"    pm.execution.setNextRequest('User1 Queue Status (matched)');",
+						"  } else {",
+						"    pm.test('PvP matched within polling window', () => { pm.expect.fail('No match found after polling'); });",
+						"  }",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Match Details",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/pvp/match/{{pvpMatchId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has questions', () => { pm.expect(d.questions.length).to.be.greaterThan(0); });",
+						"pm.collectionVariables.set('pvpTotalQuestions', String(d.total_questions || 0));",
+						"if (d.questions.length > 0) {",
+						"  pm.collectionVariables.set('pvpQuestionIndex', String(d.questions[0].index || 0));",
+						"  pm.collectionVariables.set('pvpQuestionId', d.questions[0].id);",
+						"  pm.collectionVariables.set('pvpAnswerOption0', (d.questions[0].options && d.questions[0].options.length) ? d.questions[0].options[0] : '');",
+						"}"
+					]}}]
+				},
+				{
+					"name": "User1 Answer Q1",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/pvp/match/{{pvpMatchId}}/answer",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"question_id\": \"{{pvpQuestionId}}\",\n  \"question_index\": {{pvpQuestionIndex}},\n  \"answer\": \"{{pvpAnswerOption0}}\",\n  \"time_taken\": 5.0\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"if (pm.response.code === 200) {",
+						"  pm.execution.setNextRequest('User2 Answer Q1');",
+						"} else {",
+						"  pm.execution.setNextRequest(null);",
+						"}"
+					]}}]
+				},
+				{
+					"name": "User2 Answer Q1",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/pvp/match/{{pvpMatchId}}/answer",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token2}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId2}}\",\n  \"question_id\": \"{{pvpQuestionId}}\",\n  \"question_index\": {{pvpQuestionIndex}},\n  \"answer\": \"{{pvpAnswerOption0}}\",\n  \"time_taken\": 7.0\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"let idx = parseInt(pm.collectionVariables.get('pvpQuestionIndex') || '0', 10);",
+						"if (Number.isNaN(idx)) { idx = 0; }",
+						"const total = parseInt(pm.collectionVariables.get('pvpTotalQuestions') || '0', 10);",
+						"const nextIdx = idx + 1;",
+						"if (pm.response.code === 200) {",
+						"  if (nextIdx < total) {",
+						"    pm.collectionVariables.set('pvpQuestionIndex', String(nextIdx));",
+						"    pm.execution.setNextRequest('Match Details');",
+						"  } else {",
+						"    pm.execution.setNextRequest('User1 End Match');",
+						"  }",
+						"} else {",
+						"  pm.execution.setNextRequest(null);",
+						"}"
+					]}}]
+				},
+				{
+					"name": "User1 End Match",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/pvp/match/{{pvpMatchId}}/end",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has result', () => {",
+						"  pm.expect(d).to.have.property('result');",
+						"  pm.expect(d).to.have.property('elo_change');",
+						"});"
+					]}}]
+				},
+				{
+					"name": "User2 End Match",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/pvp/match/{{pvpMatchId}}/end",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token2}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Leave Queue (empty)",
+					"request": {
+						"method": "DELETE",
+						"url": "{{baseUrl}}/api/pvp/leave-queue",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Invalid Match (404)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/pvp/match/00000000-0000-0000-0000-000000000000",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('404', () => { pm.response.to.have.status(404); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "7. Admin Dashboard",
+			"item": [
+				{
+					"name": "Overview",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/overview",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Admin overview OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Daily Analytics",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/analytics/daily?days=14",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Daily analytics OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Daily items present', () => { pm.expect(d).to.have.property('items'); });"
+					]}}]
+				},
+				{
+					"name": "Top Concepts",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/top-concepts?limit=5",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Top concepts OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "User List",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/users?page=1&per_page=10",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('User list OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Concept List",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/concepts?page=1&per_page=10",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Concept list OK', () => { pm.response.to.have.status(200); });",
+						"const body = pm.response.json();",
+						"if (body.items && body.items.length > 0 && body.items[0].concept_id) pm.collectionVariables.set('conceptId1', body.items[0].concept_id);"
+					]}}]
+				},
+				{
+					"name": "Concept Detail",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/concepts/{{conceptId1}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Concept detail OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Create Concept",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/admin/concepts",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Postman Concept {{$timestamp}}\",\n  \"topic\": \"History\",\n  \"description\": \"Created by Postman alignment suite\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Create concept OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.collectionVariables.set('adminCreatedConceptId', d.concept_id || '');",
+						"pm.test('Created concept id set', () => { pm.expect(pm.collectionVariables.get('adminCreatedConceptId')).to.not.eql(''); });"
+					]}}]
+				},
+				{
+					"name": "Update Concept",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/admin/concepts/{{adminCreatedConceptId}}",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"description\": \"Updated by Postman alignment suite\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Update concept OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "User Detail",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/users/{{userId1}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('User detail OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Toggle User Active",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/admin/users/{{userId2}}",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"is_active\": false\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Toggle user active OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Re-activate User",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/admin/users/{{userId2}}",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"is_active\": true\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Reactivate user OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Question List",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/questions?page=1&per_page=10",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Question list OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Create Question",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/admin/questions",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"question_text\": \"What year did World War II end? ({{$timestamp}})\",\n  \"correct_answer\": \"1945\",\n  \"options\": [\"1944\", \"1945\", \"1946\", \"1950\"],\n  \"explanation\": \"World War II ended in 1945.\",\n  \"topic\": \"History\",\n  \"difficulty_irt\": 2.0,\n  \"source\": \"admin\",\n  \"primary_concept_id\": \"{{adminCreatedConceptId}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Create question OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.collectionVariables.set('adminCreatedQuestionId', d.id || '');",
+						"pm.test('Created question id set', () => { pm.expect(pm.collectionVariables.get('adminCreatedQuestionId')).to.not.eql(''); });"
+					]}}]
+				},
+				{
+					"name": "Update Question",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/admin/questions/{{adminCreatedQuestionId}}",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"explanation\": \"Updated explanation from Postman suite\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Update question OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Delete Question",
+					"request": {
+						"method": "DELETE",
+						"url": "{{baseUrl}}/api/admin/questions/{{adminCreatedQuestionId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Delete question OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Delete Concept (cleanup)",
+					"request": {
+						"method": "DELETE",
+						"url": "{{baseUrl}}/api/admin/concepts/{{adminCreatedConceptId}}?force=true",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Delete concept OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Session List",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/sessions?page=1&per_page=10",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Session list OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Session List (PvP only)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/sessions?session_type=pvp&page=1&per_page=10",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('PvP session list OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Monitoring",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/monitoring",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Monitoring OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "DB Schema",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/db/schema",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('DB schema OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Schema has tables', () => { pm.expect(d).to.have.property('tables'); });"
+					]}}]
+				},
+				{
+					"name": "DB Table Rows (users)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/db/table/users?limit=5&offset=0",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('DB users table rows OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Custom Topic Candidates",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/custom-topics/candidates?limit=20",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Custom topic candidates OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Candidates payload shape', () => {",
+						"  pm.expect(d).to.have.property('items');",
+						"  pm.expect(d.items).to.be.an('array');",
+						"});",
+						"const candidate = (d.items || []).find((item) => item.slug === 'ww1') || (d.items || []).find((item) => Number(item.available_question_count || 0) > 0) || (d.items || [])[0];",
+						"pm.test('Candidate selected', () => { pm.expect(candidate).to.exist; });",
+						"if (candidate) {",
+						"  pm.collectionVariables.set('customApprovedType', candidate.type || 'History');",
+						"  pm.collectionVariables.set('customApprovedName', candidate.name || candidate.type || 'History');",
+						"  pm.collectionVariables.set('customApprovedSlug', candidate.slug || 'postman-custom-topic');",
+						"  pm.collectionVariables.set('customApprovedSourceTopic', candidate.source_topic || candidate.type || 'History');",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Approve Custom Topic",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/admin/custom-topics/approve",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"type\": \"{{customApprovedType}}\",\n  \"name\": \"{{customApprovedName}}\",\n  \"slug\": \"{{customApprovedSlug}}\",\n  \"source_topic\": \"{{customApprovedSourceTopic}}\",\n  \"max_facts\": 25\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Approve custom topic OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Approval success shape', () => {",
+						"  pm.expect(d.success).to.eql(true);",
+						"  pm.expect(d.slug).to.eql(pm.collectionVariables.get('customApprovedSlug'));",
+						"  pm.expect(d).to.have.property('total_facts');",
+						"});"
+					]}}]
+				},
+				{
+					"name": "Approve Custom Topic Again (idempotent)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/admin/custom-topics/approve",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"type\": \"{{customApprovedType}}\",\n  \"name\": \"{{customApprovedName}}\",\n  \"slug\": \"{{customApprovedSlug}}\",\n  \"source_topic\": \"{{customApprovedSourceTopic}}\",\n  \"max_facts\": 25\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Duplicate approval remains OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Duplicate approval did not create a second topic', () => {",
+						"  pm.expect(d.success).to.eql(true);",
+						"  pm.expect(d.created_topic).to.eql(false);",
+						"});"
+					]}}]
+				},
+				{
+					"name": "DB Table Rows (missing table 404)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/db/table/__missing_table__?limit=5&offset=0",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Missing table rejected', () => { pm.response.to.have.status(404); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "8. Governance",
+			"item": [
+				{
+					"name": "List Block Rules",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('List block rules OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has items array', () => { pm.expect(d).to.have.property('items'); });",
+						"pm.test('items is array', () => { pm.expect(d.items).to.be.an('array'); });"
+					]}}]
+				},
+				{
+					"name": "Create Block Rule (keyword)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": { "type": "text/javascript", "exec": [
+								"pm.collectionVariables.set('govTestPattern', 'postman_test_' + Date.now());",
+								"const token = (pm.collectionVariables.get('adminToken') || '').trim();",
+								"pm.collectionVariables.set('govCanProceed', token ? '1' : '0');"
+							]}
+						},
+						{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+							"pm.test('Create block rule OK', () => { pm.response.to.have.status(200); });",
+							"const d = pm.response.json();",
+							"pm.test('Has rule id', () => { pm.expect(d).to.have.property('id'); });",
+							"pm.test('Kind is keyword', () => { pm.expect(d.kind).to.eql('keyword'); });",
+							"pm.test('Is active', () => { pm.expect(d.is_active).to.eql(true); });",
+							"pm.collectionVariables.set('govRuleId', d.id);"
+						]}}
+					],
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"kind\": \"keyword\",\n  \"pattern\": \"{{govTestPattern}}\"\n}" }
+					}
+				},
+				{
+					"name": "Create Duplicate Rule (409)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"kind\": \"keyword\",\n  \"pattern\": \"{{govTestPattern}}\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Duplicate governance rule rejected', () => { pm.response.to.have.status(409); });"
+					]}}]
+				},
+				{
+					"name": "Create Rule Invalid Kind (422)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"kind\": \"invalid_type\",\n  \"pattern\": \"test\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Invalid kind rejected', () => { pm.response.to.have.status(422); });"
+					]}}]
+				},
+				{
+					"name": "Toggle Rule (deactivate)",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules/{{govRuleId}}",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"is_active\": false\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Deactivate rule OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Rule deactivated', () => { pm.expect(d.is_active).to.eql(false); });"
+					]}}]
+				},
+				{
+					"name": "Toggle Rule (reactivate)",
+					"request": {
+						"method": "PATCH",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules/{{govRuleId}}",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{adminToken}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"is_active\": true\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Reactivate rule OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Rule reactivated', () => { pm.expect(d.is_active).to.eql(true); });"
+					]}}]
+				},
+				{
+					"name": "List Audits",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/governance/audits?limit=10",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('List audits OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has items', () => { pm.expect(d).to.have.property('items'); });",
+						"pm.test('Has total', () => { pm.expect(d).to.have.property('total'); });",
+						"pm.test('Has acceptance', () => { pm.expect(d).to.have.property('persist_acceptance'); });",
+						"pm.test('Acceptance has rate', () => { pm.expect(d.persist_acceptance).to.have.property('rate'); });"
+					]}}]
+				},
+				{
+					"name": "List Audits (rejected only)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/governance/audits?approved=false&limit=5",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('List rejected audits OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Only rejected entries', () => {",
+						"  d.items.forEach(i => pm.expect(i.approved).to.eql(false));",
+						"});"
+					]}}]
+				},
+				{
+					"name": "Governance Read Access",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Delete Block Rule (cleanup)",
+					"request": {
+						"method": "DELETE",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules/{{govRuleId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Delete block rule OK', () => { pm.response.to.have.status(200); });"
+					]}}]
+				},
+				{
+					"name": "Delete Already-Deleted Rule (404)",
+					"request": {
+						"method": "DELETE",
+						"url": "{{baseUrl}}/api/admin/governance/blocked-rules/{{govRuleId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Delete already deleted rule returns 404', () => { pm.response.to.have.status(404); });"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "9. Scholar Chat",
+			"item": [
+				{
+					"name": "Ask Scholar (history)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/chat/ask",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"question\": \"Who was the first president of the United States?\",\n  \"topic_hint\": \"history\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"if (pm.response.code === 200) { pm.test('Scholar ask OK', () => { pm.response.to.have.status(200); }); } else { pm.test('Scholar unavailable', () => { pm.response.to.have.status(503); }); }",
+						"if (pm.response.code === 200) {",
+						"  const d = pm.response.json();",
+						"  pm.test('Scholar response has answer', () => { pm.expect(d.answer).to.be.a('string'); });",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Ask Scholar (out of scope)",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/chat/ask",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"question\": \"Explain JavaScript closures with code\",\n  \"topic_hint\": \"history\"\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"if (pm.response.code === 400) { pm.test('Out-of-scope rejected', () => { pm.response.to.have.status(400); }); } else { pm.test('Scholar unavailable', () => { pm.response.to.have.status(503); }); }"
+					]}}]
+				}
+			]
+		},
+		{
+			"name": "10. Visual Room",
+			"item": [
+				{
+					"name": "Start Session",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/visual/start-session",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"user_id\": \"{{userId1}}\",\n  \"topic\": \"Mixed\",\n  \"level\": 1\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('200 OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has session data', () => {",
+						"  pm.expect(d).to.have.property('session_id');",
+						"});",
+						"pm.collectionVariables.set('visualSessionId', d.session_id);"
+					]}}]
+				},
+				{
+					"name": "Get Next Question",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/visual/next?session_id={{visualSessionId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"if (pm.response.code === 200) { pm.test('Visual question fetched', () => { pm.response.to.have.status(200); }); } else { pm.test('Visual content unavailable', () => { pm.response.to.have.status(503); }); }",
+						"if (pm.response.code === 200) {",
+						"  const d = pm.response.json();",
+						"  pm.test('Has question without correct_answer', () => {",
+						"    pm.expect(d).to.have.property('id');",
+						"    pm.expect(d).to.not.have.property('correct_answer');",
+						"  });",
+						"  pm.collectionVariables.set('visualQuestionId', d.id);",
+						"  pm.collectionVariables.set('visualAnswerGuess', (d.options && d.options.length) ? d.options[0] : 'Unknown');",
+						"} else {",
+						"  pm.collectionVariables.set('visualQuestionId', '');",
+						"  pm.collectionVariables.set('visualAnswerGuess', '');",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Get Hint",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/visual/hint?session_id={{visualSessionId}}&question_id={{visualQuestionId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const hasQuestion = (pm.collectionVariables.get('visualQuestionId') || '').trim().length > 0;",
+						"if (!hasQuestion) { pm.test('Visual hint blocked without question', () => { pm.response.to.have.status(422); }); } else { pm.test('Visual hint OK', () => { pm.response.to.have.status(200); }); }"
+					]}}]
+				},
+				{
+					"name": "Submit Answer",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/visual/submit",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token1}}" }
+						],
+						"body": { "mode": "raw", "raw": "{\n  \"session_id\": \"{{visualSessionId}}\",\n  \"question_id\": \"{{visualQuestionId}}\",\n  \"user_id\": \"{{userId1}}\",\n  \"chosen_answer\": \"{{visualAnswerGuess}}\",\n  \"user_time_ms\": 5000\n}" }
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const hasQuestion = (pm.collectionVariables.get('visualQuestionId') || '').trim().length > 0;",
+						"if (!hasQuestion) { pm.test('Visual submit blocked without question', () => { pm.response.to.have.status(422); }); } else { pm.test('Visual submit OK', () => { pm.response.to.have.status(200); }); }",
+						"if (hasQuestion && pm.response.code === 200) {",
+						"  const d = pm.response.json();",
+						"  pm.test('Returns correct_answer', () => {",
+						"    pm.expect(d).to.have.property('correct_answer');",
+						"  });",
+						"}"
+					]}}]
+				},
+				{
+					"name": "Get Explanation",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/api/visual/explanation?session_id={{visualSessionId}}&question_id={{visualQuestionId}}",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"const hasQuestion = (pm.collectionVariables.get('visualQuestionId') || '').trim().length > 0;",
+						"if (!hasQuestion) { pm.test('Visual explanation blocked without question', () => { pm.response.to.have.status(422); }); } else { pm.test('Visual explanation OK', () => { pm.response.to.have.status(200); }); }"
+					]}}]
+				},
+				{
+					"name": "End Session",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/api/visual/session/{{visualSessionId}}/end",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token1}}" }]
+					},
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+						"pm.test('Visual session end OK', () => { pm.response.to.have.status(200); });",
+						"const d = pm.response.json();",
+						"pm.test('Has score', () => {",
+						"  pm.expect(d).to.have.property('score');",
+						"});"
+					]}}]
+				}
+			]
+		}
+	]
+}
+
+

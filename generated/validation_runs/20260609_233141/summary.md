@@ -1,0 +1,18 @@
+﻿# AdaptIQ validation summary
+
+- Run: 20260609_233141
+- API: http://localhost:8000
+- Output folder: C:\Users\mns\Downloads\P_F_E-main\P_F_E\generated\validation_runs\20260609_233141
+
+## Results
+- AdaptIQ validation run: 20260609_233141
+- Root: C:\Users\mns\Downloads\P_F_E-main\P_F_E
+- API base: http://localhost:8000
+- PASS | Preflight: check folders | 0.01s
+- PASS | Start Docker services: postgres + redis | 0.01s
+- FAIL | Backend dependencies | 0.07s | Python 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)] on win32
+- FAIL | Backend pytest suite | 0.05s | Python 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)] on win32
+- FAIL | Start backend and verify health | 78.57s | Backend did not become healthy within 75 seconds. See C:\Users\mns\Downloads\P_F_E-main\P_F_E\generated\validation_runs\20260609_233141\backend_server.log and C:\Users\mns\Downloads\P_F_E-main\P_F_E\generated\validation_runs\20260609_233141\backend_server.err.log
+- FAIL | Postman/Newman API validation | 4.33s | npm error code E404
+- FAIL | Frontend install/build/tests | 0.23s | frontend_npm_install exited with code 1. See C:\Users\mns\Downloads\P_F_E-main\P_F_E\generated\validation_runs\20260609_233141\frontend_npm_install.log
+- FAIL | Playwright E2E tests if configured | 2.11s | npm error code E404

@@ -1,0 +1,214 @@
+[
+  {
+    "email": "admin.master@example.com",
+    "username": "admin_master",
+    "password": "AdminPass123!",
+    "is_admin": true,
+    "points": 18500,
+    "level": "Expert",
+    "elo_global": 1825.0,
+    "challenge_rank_points": 18500,
+    "custom_topics": {
+      "History - World War II": 100.0,
+      "Geography - France": 100.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": true
+    }
+  },
+  {
+    "email": "challenge.e@example.com",
+    "username": "challenge_e",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 30,
+    "level": "Novice",
+    "elo_global": 980.0,
+    "challenge_rank_points": 120,
+    "custom_topics": {
+      "History - World War II": 8.0,
+      "Geography - France": 0.0
+    },
+    "onboarding": {
+      "first_login": true,
+      "onboarding_completed": false,
+      "tour_seen": false
+    }
+  },
+  {
+    "email": "challenge.d@example.com",
+    "username": "challenge_d",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 640,
+    "level": "Intermediate",
+    "elo_global": 1105.0,
+    "challenge_rank_points": 1450,
+    "custom_topics": {
+      "History - World War II": 42.0,
+      "Geography - France": 18.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": false
+    }
+  },
+  {
+    "email": "challenge.c@example.com",
+    "username": "challenge_c",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 1260,
+    "level": "Intermediate",
+    "elo_global": 1220.0,
+    "challenge_rank_points": 4200,
+    "custom_topics": {
+      "History - World War II": 50.0,
+      "Geography - France": 34.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": true
+    }
+  },
+  {
+    "email": "challenge.b@example.com",
+    "username": "challenge_b",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 2050,
+    "level": "Advanced",
+    "elo_global": 1385.0,
+    "challenge_rank_points": 8100,
+    "custom_topics": {
+      "History - World War II": 72.0,
+      "Geography - France": 24.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": true
+    }
+  },
+  {
+    "email": "classic.novice@example.com",
+    "username": "classic_novice",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 90,
+    "level": "Novice",
+    "elo_global": 1000.0,
+    "challenge_rank_points": 0,
+    "custom_topics": {
+      "History - World War II": 0.0,
+      "Geography - France": 0.0
+    },
+    "onboarding": {
+      "first_login": true,
+      "onboarding_completed": false,
+      "tour_seen": false
+    }
+  },
+  {
+    "email": "classic.expert@example.com",
+    "username": "classic_expert",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 2320,
+    "level": "Expert",
+    "elo_global": 1660.0,
+    "challenge_rank_points": 15350,
+    "custom_topics": {
+      "History - World War II": 100.0,
+      "Geography - France": 100.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": true
+    }
+  },
+  {
+    "email": "custom.fresh@example.com",
+    "username": "custom_fresh",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 10,
+    "level": "Novice",
+    "elo_global": 1000.0,
+    "challenge_rank_points": 10,
+    "custom_topics": {
+      "History - World War II": 0.0,
+      "Geography - France": 0.0
+    },
+    "onboarding": {
+      "first_login": true,
+      "onboarding_completed": false,
+      "tour_seen": false
+    }
+  },
+  {
+    "email": "custom.complete@example.com",
+    "username": "custom_complete",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 780,
+    "level": "Intermediate",
+    "elo_global": 1195.0,
+    "challenge_rank_points": 3300,
+    "custom_topics": {
+      "History - World War II": 100.0,
+      "History - Cold War": 82.0,
+      "Geography - France": 88.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": false
+    }
+  },
+  {
+    "email": "pvp.grinder@example.com",
+    "username": "pvp_grinder",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 1450,
+    "level": "Advanced",
+    "elo_global": 1575.0,
+    "challenge_rank_points": 7450,
+    "custom_topics": {
+      "History - World War II": 68.0,
+      "Geography - France": 66.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": true
+    }
+  },
+  {
+    "email": "challenge.alllevels@example.com",
+    "username": "challenge_all_levels",
+    "password": "TestPass123!",
+    "is_admin": false,
+    "points": 2890,
+    "level": "Master",
+    "elo_global": 1740.0,
+    "challenge_rank_points": 22000,
+    "custom_topics": {
+      "History - World War I": 100.0,
+      "History - World War II": 100.0,
+      "Geography - United States": 92.0,
+      "Geography - France": 96.0
+    },
+    "onboarding": {
+      "first_login": false,
+      "onboarding_completed": true,
+      "tour_seen": true
+    }
+  }
+]

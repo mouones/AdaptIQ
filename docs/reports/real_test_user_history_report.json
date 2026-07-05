@@ -1,0 +1,86 @@
+{
+  "base_url": "http://localhost:8000",
+  "classic_questions": 2,
+  "custom_questions": 2,
+  "challenge_questions": 2,
+  "users": [
+    {
+      "email": "admin.master@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "challenge.e@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "challenge.d@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "challenge.c@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "challenge.b@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "classic.novice@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "classic.expert@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "custom.fresh@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "custom.complete@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "pvp.grinder@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    },
+    {
+      "email": "challenge.alllevels@example.com",
+      "classic_answered": 2,
+      "custom_answered": 2,
+      "challenge_answered": 2,
+      "status": "ok"
+    }
+  ],
+  "errors": []
+}

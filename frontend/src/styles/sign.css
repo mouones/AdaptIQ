@@ -1,0 +1,8 @@
+/* Sign-up-specific styles */
+
+/* Example: highlight sign up button differently */
+.auth-button.signup {
+  background: #f59e42;
+}
+
+/* Add more sign-up-specific styles here */

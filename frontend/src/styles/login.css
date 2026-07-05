@@ -1,0 +1,8 @@
+/* Login-specific styles */
+
+/* Example: highlight login button differently */
+.auth-button.login {
+  background: #22c55e;
+}
+
+/* Add more login-specific styles here */

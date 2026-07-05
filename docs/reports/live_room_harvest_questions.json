@@ -1,0 +1,192 @@
+[
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "c5b17cb2-d617-4384-9399-2935555dd87d",
+    "question_id": "5902ec94-640f-4506-99d8-e6d687be395b",
+    "text": "The capital of Namibia was the cause of the Herero Wars (1904-1907) because it was built on the site of a",
+    "options": [
+      "German colonial settlement",
+      "ancient stone wall from a pre-colonial era",
+      "supposed ancestral tomb of a prominent Herero figure",
+      "river which provided access to fertile land"
+    ],
+    "selected_answer": "German colonial settlement",
+    "is_correct": false,
+    "correct_answer": "supposed ancestral tomb of a prominent Herero figure",
+    "explanation": "The Herero people believed that the German colonial settlement in Windhoek desecrated sacred ancestral lands, sparking a conflict that would become one of the first genocides of the 20th century.",
+    "hint": "\"Consider a region where German colonial ambitions clashed with indigenous cultures in the early 20th century.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "fcf2fe7b-a4a2-41fa-88b0-37027edc77cd",
+    "question_id": "1292d4b5-b824-462d-9cb0-efc156512da8",
+    "text": "Which country is the capital of which led to a dispute over the Danube River, causing the Austro-Prussian War?",
+    "options": [
+      "Hungary",
+      "Prussia",
+      "Bulgaria",
+      "Austria"
+    ],
+    "selected_answer": "Hungary",
+    "is_correct": false,
+    "correct_answer": "Austria",
+    "explanation": "The dispute was largely centered around Otto von Bismarck's diplomatic attempts to isolate Austria's influence in the region, exacerbating existing tensions over the Danube River and the Austrian control of the Habsburg territories.",
+    "hint": "\"A conflict involving this nation led to a pivotal war in the mid-19th century's European landscape.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "95f82fbf-e249-460f-a261-d6b23166377f",
+    "question_id": "77f943d1-3cfe-41c3-add9-fee22dda3fb0",
+    "text": "Which country is the capital of, partly due to the Opium Wars?",
+    "options": [
+      "United Kingdom",
+      "Japan",
+      "China",
+      "India"
+    ],
+    "selected_answer": "United Kingdom",
+    "is_correct": false,
+    "correct_answer": "China",
+    "explanation": "The Opium Wars led to the forced opening of Chinese ports to European trade, establishing Shanghai as a major city and eventually the capital of the country's foreign concessions.",
+    "hint": "\"Consider a nation that was once ruled by a dynasty that built the Great Wall.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "eb5b7228-3e6c-41b1-9f45-022ed0c7093c",
+    "question_id": "04d37696-f281-48ed-9483-71957e4b6bcd",
+    "text": "Which country's capital is Khartoum, and which major river caused its invasion in the 1880s?",
+    "options": [
+      "Ethiopia",
+      "Sudan",
+      "Uganda",
+      "Burkina Faso"
+    ],
+    "selected_answer": "Ethiopia",
+    "is_correct": false,
+    "correct_answer": "Sudan",
+    "explanation": "The invasion of Sudan by the Mahdist State was largely fueled by British concerns over control of the White Nile River, which connected to the vital trade route to Egypt's capital, Cairo.",
+    "hint": "\"In the 19th century, a major crisis unfolded along the Nile River in Africa's Saharan region.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "39c975c5-6cbe-424d-913d-6dc289441899",
+    "question_id": "c8121970-ee49-4ef0-9695-c1a8f21b62d8",
+    "text": "Which European country's capital, Sarajevo, was the site where Archduke Franz Ferdinand was assassinated?",
+    "options": [
+      "Austria",
+      "Serbia",
+      "Bosnia and Herzegovina",
+      "Czechoslovakia"
+    ],
+    "selected_answer": "Austria",
+    "is_correct": true,
+    "correct_answer": "Austria",
+    "explanation": "This event triggered the chain reaction of alliances that led to World War I, but it also had a profound impact on the Balkans.",
+    "hint": "\"In the Balkans, where ancient empires once clashed, a pivotal event ignited World War.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "2206c291-9cff-45f7-95b2-78750a5a9933",
+    "question_id": "9d189d6a-e318-4b5b-b5f7-2065b0da9632",
+    "text": "The capital of Vietnam was the primary target during which war between the North and a US-led coalition?",
+    "options": [
+      "Laos War",
+      "Cambodian Civil War",
+      "First Indochina War",
+      "Vietnam War"
+    ],
+    "selected_answer": "Laos War",
+    "is_correct": false,
+    "correct_answer": "Vietnam War",
+    "explanation": "The Vietnam War was fought over the reunification of North and South Vietnam, with the North receiving support from China and the Soviet Union, while the South was backed by the US. The capital, Hanoi, was a major military and strategic location.",
+    "hint": "\" Conflict between a divided nation and a powerful alliance in Southeast Asia during the mid-20th century.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "58192cd3-da0e-49f1-bd0f-9ed3d428fc74",
+    "question_id": "a8b89617-9b5e-438c-8199-06bd7a78f7ad",
+    "text": "Aung San Suu Kyi's government was overthrown due to the military's concern over its close ties with which Southeast Asian country?",
+    "options": [
+      "Thailand",
+      "Cambodia",
+      "Laos",
+      "Malaysia"
+    ],
+    "selected_answer": "Thailand",
+    "is_correct": true,
+    "correct_answer": "Thailand",
+    "explanation": "The Burmese military feared a potential Thai-backed coup, given their previous collaborations on ethnic minority issues.",
+    "hint": "\"Consider Southeast Asia's tumultuous past and a neighboring nation with close US ties during Aung San Suu Kyi's time.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "df633af5-c8d5-496b-a374-0c057fe80597",
+    "question_id": "19efbbf5-307f-40e3-9ce4-68482ff6473f",
+    "text": "The city of Lusaka is the capital of which African nation that gained independence in 1964?",
+    "options": [
+      "Botswana",
+      "Malawi",
+      "Zambia",
+      "Kenya"
+    ],
+    "selected_answer": "Botswana",
+    "is_correct": false,
+    "correct_answer": "Zambia",
+    "explanation": "The country's path to independence was influenced by the rise of the African nationalist movement, sparked by the Pan-African Congress in 1945.",
+    "hint": "\"Consider a nation that's rich in copper and located near Victoria Falls.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "250d6a7a-6861-446b-8cb3-26c98731d365",
+    "question_id": "e7264a27-31e6-4ca1-a8ee-ee671ed18554",
+    "text": "The war was sparked by Poland's invasion of which of these countries, causing Germany to declare war in 1939?",
+    "options": [
+      "Netherlands",
+      "Belgium",
+      "Denmark",
+      "Norway"
+    ],
+    "selected_answer": "Netherlands",
+    "is_correct": false,
+    "correct_answer": "Denmark",
+    "explanation": "Denmark's refusal to surrender key ships to Poland led to Germany's invasion, initiating the Second World War in Europe.",
+    "hint": "\"Events that led to World War II often involved small countries in Northern Europe.\""
+  },
+  {
+    "flow": "classic_history",
+    "room": "classic",
+    "topic": "history",
+    "session_id": "4978fd18-41f6-4c2a-9673-7c0f0e0aa9e8",
+    "question_id": "d07d3581-1cc5-4224-9f62-455480a25730",
+    "text": "Mongolia's capital, Ulaanbaatar, was involved in a war sparked by a severe famine, which of the following events occurred",
+    "options": [
+      "The Buriat rebellion against the Chinese Qing Dynasty in 1915",
+      "The Soviet occupation of Mongolia in 1924",
+      "Deng's forced relocation of nomads in 1921-1922",
+      "The Chinese Civil War between the Nationalists and Communists in 1927"
+    ],
+    "selected_answer": "The Buriat rebellion against the Chinese Qing Dynasty in 1915",
+    "is_correct": false,
+    "correct_answer": "Deng's forced relocation of nomads in 1921-1922",
+    "explanation": "The forced relocation of nomads led to a massive loss of livestock, triggering a severe famine that ultimately sparked the 1921 Mongolian Revolution.",
+    "hint": "\"Early 20th-century turmoil in a vast, sparsely populated nation led to a catastrophic forced migration.\""
+  }
+]

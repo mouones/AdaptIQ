@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-04-13T19:25:03+00:00",
+  "base_url": "http://localhost:8000",
+  "target_per_flow": 10,
+  "flows": [
+    {
+      "name": "classic_history",
+      "room": "classic",
+      "topic": "history",
+      "status": "ok",
+      "metrics": {
+        "total_questions": 10,
+        "unique_questions": 10,
+        "duplicate_questions": 0,
+        "duplicate_rate": 0.0,
+        "hint_count": 10,
+        "hint_rate": 1.0,
+        "correct_count": 2,
+        "correct_rate": 0.2,
+        "top_repeated_questions": [],
+        "top_repeated_signatures": [],
+        "top_keywords": [
+          {
+            "keyword": "capital",
+            "count": 8
+          },
+          {
+            "keyword": "country",
+            "count": 5
+          },
+          {
+            "keyword": "war",
+            "count": 5
+          },
+          {
+            "keyword": "wars",
+            "count": 2
+          },
+          {
+            "keyword": "site",
+            "count": 2
+          },
+          {
+            "keyword": "led",
+            "count": 2
+          },
+          {
+            "keyword": "over",
+            "count": 2
+          },
+          {
+            "keyword": "river",
+            "count": 2
+          },
+          {
+            "keyword": "causing",
+            "count": 2
+          },
+          {
+            "keyword": "due",
+            "count": 2
+          },
+          {
+            "keyword": "its",
+            "count": 2
+          },
+          {
+            "keyword": "invasion",
+            "count": 2
+          }
+        ]
+      },
+      "record_count": 10
+    }
+  ],
+  "errors": []
+}
